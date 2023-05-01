@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { AddProject } from "./add-project";
 
 export default function Projects() {
   return (
@@ -16,20 +17,7 @@ export default function Projects() {
           <CardDescription>Here you will see all your projects</CardDescription>
         </CardHeader>
       </Card>
-      <Card className="w-full border-dashed border-4">
-        <CardHeader>
-          <CardTitle className="text-2xl text-center">
-            No projects found
-          </CardTitle>
-          <CardDescription className="text-center">
-            But there is no problem, click the "Add" button to add your first
-            project!
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex justify-center">
-          <Button>Add</Button>
-        </CardContent>
-      </Card>
+      <AddProject />
     </div>
   );
 }
