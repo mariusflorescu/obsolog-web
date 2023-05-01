@@ -7,7 +7,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <SignedIn>
         <div className="h-screen flex">
           <Sidebar />
-          <main className="pl-12">{children}</main>
+          <main className="w-full px-12">{children}</main>
         </div>
       </SignedIn>
       <SignedOut>
