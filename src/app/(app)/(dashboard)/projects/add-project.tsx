@@ -1,3 +1,6 @@
+"use client";
+
+import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,6 +16,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 
 export function AddProject() {
   return (
@@ -28,15 +33,29 @@ export function AddProject() {
       </CardHeader>
       <CardContent className="flex justify-center">
         <Dialog>
-          <DialogTrigger>Open</DialogTrigger>
+          <DialogTrigger asChild>
+            <Button>Add</Button>
+          </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Are you sure absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </DialogDescription>
+              <DialogTitle>Create Project</DialogTitle>
             </DialogHeader>
+            <div className="mt-8 flex flex-col gap-4">
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="project-name">Project name</Label>
+                <Input id="project-name" placeholder="Unicorn Project" />
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="url">Project URL</Label>
+                <Input id="url" placeholder="https://unicorn.app" />
+              </div>
+            </div>
+            <div className="mt-4 flex justify-center gap-4">
+              <Button className="w-full">Submit</Button>
+              <Button variant="outline" className="w-full">
+                Cancel
+              </Button>
+            </div>
           </DialogContent>
         </Dialog>
       </CardContent>
