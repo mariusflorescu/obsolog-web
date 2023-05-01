@@ -6,20 +6,47 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:push": "dotenv -e .env.local -- pnpx prisma db push"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.16.4",
+    "@prisma/client": "^4.13.0",
+    "@radix-ui/react-slot": "^1.0.1",
+    "@t3-oss/env-nextjs": "^0.2.2",
+    "@tanstack/react-query": "^4.29.5",
+    "@trpc/client": "^10.23.0",
+    "@trpc/next": "^10.23.0",
+    "@trpc/react-query": "^10.23.0",
+    "@trpc/server": "^10.23.0",
     "@types/node": "18.16.3",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
+    "class-variance-authority": "^0.6.0",
+    "clsx": "^1.2.1",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.2",
+    "lucide-react": "^0.188.0",
+    "micro": "^10.0.1",
     "next": "13.3.2",
+    "next-themes": "^0.2.1",
     "postcss": "8.4.23",
+    "prisma": "^4.13.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "superjson": "^1.12.3",
+    "svix": "^0.84.1",
+    "tailwind-merge": "^1.12.0",
     "tailwindcss": "3.3.2",
-    "typescript": "5.0.4"
+    "tailwindcss-animate": "^1.0.5",
+    "typescript": "5.0.3",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.2.1"
+  },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
   }
 }
