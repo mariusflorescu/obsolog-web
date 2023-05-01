@@ -1,5 +1,5 @@
 import { SignIn, SignedIn, SignedOut } from "@clerk/nextjs/app-beta";
-import { Sidebar } from "./Sidebar";
+import { Sidebar } from "./sidebar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (

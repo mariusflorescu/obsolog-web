@@ -27,7 +27,7 @@ function MainItem({ icon, children, href }: MainItemProps) {
     <li className=" w-full">
       <Link
         href={href}
-        className="w-full flex items-center gap-4 hover:bg-zinc-200 hover:dark:bg-zinc-900 rounded p-2"
+        className="w-full flex items-center gap-4 hover:bg-muted rounded p-2"
       >
         {icon}
         <span>{children}</span>
@@ -56,7 +56,7 @@ function ChannelItem({ children, href }: ChannelItemProps) {
     <li className="w-full">
       <Link
         href={href}
-        className="w-full flex items-center gap-4 hover:bg-zinc-200 hover:dark:bg-zinc-900 rounded p-2"
+        className="w-full flex items-center gap-4 hover:bg-muted rounded-md p-2"
       >
         <Icons.hash className="w-5 h-5" />
         <span>{children}</span>
