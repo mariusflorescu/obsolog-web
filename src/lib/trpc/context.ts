@@ -12,6 +12,7 @@ export async function createContext({
     req,
     res,
     user: userId ? { id: userId } : null,
+    tenant: userId ? { id: userId } : null,
   };
 }
 

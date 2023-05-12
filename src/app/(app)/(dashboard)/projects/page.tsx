@@ -4,18 +4,27 @@ import {
   CardTitle,
   CardDescription,
 } from "~/components/ui/card";
-import { AddProject } from "./add-project";
+import { ProjectsView } from "./projects";
+import { AddProjectModal } from "~/components/add-project-modal";
+import { Icons } from "~/components/ui/icons";
 
 export default function Projects() {
   return (
-    <div className="py-8 flex flex-col gap-8">
+    <div className="w-full h-full py-8 flex flex-col gap-8">
       <Card className="w-full">
-        <CardHeader>
-          <CardTitle>Projects</CardTitle>
-          <CardDescription>Here you will see all your projects</CardDescription>
+        <CardHeader className="flex flex-row justify-between">
+          <div>
+            <CardTitle>Projects</CardTitle>
+            <CardDescription className="mt-2">
+              Here you will see all your projects
+            </CardDescription>
+          </div>
+          <AddProjectModal buttonVariant="ghost" buttonSize="sm">
+            <Icons.plus />
+          </AddProjectModal>
         </CardHeader>
       </Card>
-      <AddProject />
+      <ProjectsView />
     </div>
   );
 }

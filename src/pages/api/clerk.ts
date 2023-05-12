@@ -2,7 +2,7 @@ import { Webhook } from "svix";
 import { buffer } from "micro";
 import { z } from "zod";
 import { NextApiRequest, NextApiResponse } from "next";
-import { env } from "~/lib/env.js";
+import { env } from "~/lib/env";
 import { db } from "~/lib/db";
 
 export const config = {
@@ -16,7 +16,7 @@ const body = z.discriminatedUnion("type", [
     type: z.literal("user.created"),
     data: z.object({
       id: z.string(),
-      username: z.string(),
+      username: z.string().nullable(),
       created_at: z.number(),
     }),
   }),

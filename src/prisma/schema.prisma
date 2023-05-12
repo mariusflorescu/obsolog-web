@@ -20,5 +20,18 @@ model Tenant {
 
   plan Plan @default(HOBBY)
 
+  project Project[]
+
   @@index([id, slug])
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  url         String
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+
+  tenantId String @unique
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 }
