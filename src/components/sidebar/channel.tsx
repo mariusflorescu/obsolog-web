@@ -24,14 +24,15 @@ export function ChannelList() {
             <Skeleton className="w-full h-[40px]" />
           </>
         )}
-        {data &&
+        {!isFetching &&
+          data &&
           data.length > 0 &&
           data.map((channel) => (
             <ChannelItem key={channel.id} href={`/channels/${channel.id}`}>
               {channel.name}
             </ChannelItem>
           ))}
-        {data && data.length === 0 && (
+        {!isFetching && data && data.length === 0 && (
           <span className="text-muted-foreground text-xs">
             No channels created
           </span>

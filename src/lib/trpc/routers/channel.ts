@@ -69,7 +69,7 @@ export const channelRouter = t.router({
         },
       });
     }),
-  editChannel: t.procedure
+  update: t.procedure
     .use(auth)
     .input(z.object({ id: z.string(), name: z.string().regex(/^[a-z\.]+$/) }))
     .mutation(async ({ ctx, input }) => {

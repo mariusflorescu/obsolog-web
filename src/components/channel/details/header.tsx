@@ -1,16 +1,17 @@
 "use client";
 
+import { format } from "date-fns";
 import { useParams } from "next/navigation";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
 import { Spinner } from "~/components/ui/spinner";
 import { trpc } from "~/lib/trpc/client";
-import { format } from "date-fns";
+import { DeleteChannelModal } from "./delete";
+import { EditChannelModal } from "./edit";
 
 export function Header() {
   const params = useParams();
@@ -36,6 +37,10 @@ export function Header() {
               Created on {format(data!.createdAt, "dd/MM/yyyy")}
             </i>
           </CardDescription>
+        </div>
+        <div className="flex gap-2 items-center">
+          <EditChannelModal id={id as string} />
+          <DeleteChannelModal id={id as string} />
         </div>
       </CardHeader>
     </Card>
