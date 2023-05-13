@@ -8,6 +8,7 @@ import {
   FileCode,
   Hash,
   Plus,
+  Trash2,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -21,4 +22,5 @@ export const Icons = {
   organization: Building,
   hash: Hash,
   plus: Plus,
+  trash: Trash2,
 };

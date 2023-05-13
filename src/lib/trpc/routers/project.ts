@@ -54,6 +54,29 @@ export const projectRouter = t.router({
       },
     });
   }),
+  getProject: t.procedure
+    .use(auth)
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      if (!ctx.tenant?.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Project actions require a tenant",
+        });
+      }
+
+      return db.project.findUnique({
+        select: {
+          name: true,
+          url: true,
+          description: true,
+          createdAt: true,
+        },
+        where: {
+          id: input.id,
+        },
+      });
+    }),
   deleteProject: t.procedure
     .use(auth)
     .input(z.object({ projectId: z.string() }))
@@ -68,7 +91,6 @@ export const projectRouter = t.router({
       await db.project.delete({
         where: {
           id: input.projectId,
-          tenantId: ctx.tenant.id,
         },
       });
 
