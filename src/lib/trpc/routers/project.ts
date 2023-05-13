@@ -10,6 +10,7 @@ export const projectRouter = t.router({
       z.object({
         name: z.string(),
         url: z.string().url(),
+        description: z.string().nullable(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -24,6 +25,7 @@ export const projectRouter = t.router({
         data: {
           name: input.name,
           url: input.url,
+          description: input.description,
           tenantId: ctx.tenant.id,
         },
       });

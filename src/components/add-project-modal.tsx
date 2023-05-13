@@ -16,6 +16,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useToast } from "~/hooks/use-toast";
 import { trpc } from "~/lib/trpc/client";
+import { Textarea } from "./ui/textarea";
 
 const projectSchema = z.object({
   name: z.string().nonempty("This field must not be empty"),
@@ -23,6 +24,7 @@ const projectSchema = z.object({
     .string()
     .nonempty("This field must not be empty")
     .url("Must be a valid URL"),
+  description: z.string().nullable(),
 });
 
 type ProjectSchema = z.infer<typeof projectSchema>;
@@ -55,12 +57,13 @@ export function AddProjectModal({
     defaultValues: {
       name: "",
       url: "",
+      description: null,
     },
     resolver: zodResolver(projectSchema),
   });
 
-  const onSubmit: SubmitHandler<ProjectSchema> = ({ name, url }) =>
-    mutate({ name, url });
+  const onSubmit: SubmitHandler<ProjectSchema> = ({ name, url, description }) =>
+    mutate({ name, url, description });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -78,7 +81,7 @@ export function AddProjectModal({
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="project-name">Project name</Label>
+            <Label htmlFor="project-name">Project name*</Label>
             <Input
               id="project-name"
               placeholder="Unicorn Project"
@@ -86,11 +89,19 @@ export function AddProjectModal({
             />
           </div>
           <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="url">Project URL</Label>
+            <Label htmlFor="url">Project URL*</Label>
             <Input
               id="url"
               placeholder="https://unicorn.app"
               {...register("url")}
+            />
+          </div>
+          <div className="grid w-full items-center gap-1.5">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              placeholder="My awesome project"
+              {...register("description")}
             />
           </div>
           <div className="mt-4 flex justify-center gap-4">

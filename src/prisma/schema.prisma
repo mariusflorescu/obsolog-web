@@ -32,6 +32,8 @@ model Project {
   description String?
   createdAt   DateTime @default(now())
 
-  tenantId String @unique
+  tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
 }
