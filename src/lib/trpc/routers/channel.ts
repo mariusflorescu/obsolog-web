@@ -69,4 +69,49 @@ export const channelRouter = t.router({
         },
       });
     }),
+  editChannel: t.procedure
+    .use(auth)
+    .input(z.object({ id: z.string(), name: z.string().regex(/^[a-z\.]+$/) }))
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.tenant?.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Channel actions require a tenant",
+        });
+      }
+
+      await db.channel.update({
+        data: {
+          name: input.name,
+        },
+        where: {
+          id: input.id,
+        },
+      });
+
+      return {
+        success: true,
+      };
+    }),
+  deleteChannel: t.procedure
+    .use(auth)
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.tenant?.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Channel actions require a tenant",
+        });
+      }
+
+      await db.channel.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return {
+        success: true,
+      };
+    }),
 });
