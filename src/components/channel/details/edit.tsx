@@ -43,6 +43,7 @@ export function EditChannelModal({ id }: { id: string }) {
       });
       utils.channel.get.invalidate();
       utils.channel.getChannel.invalidate({ id });
+      utils.overview.get.invalidate();
     },
   });
 

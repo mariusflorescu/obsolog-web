@@ -107,8 +107,8 @@ export const projectRouter = t.router({
       });
 
       return {
-        success: true
-      }
+        success: true,
+      };
     }),
   deleteProject: t.procedure
     .use(auth)
@@ -131,25 +131,4 @@ export const projectRouter = t.router({
         success: true,
       };
     }),
-  overview: t.procedure.use(auth).query(async ({ ctx }) => {
-    if (!ctx.tenant?.id) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Project actions require a tenant",
-      });
-    }
-
-    const numOfProjects = await db.project.aggregate({
-      _count: {
-        id: true,
-      },
-      where: {
-        tenantId: ctx.tenant.id,
-      },
-    });
-
-    return {
-      numOfProjects: numOfProjects._count.id,
-    };
-  }),
 });

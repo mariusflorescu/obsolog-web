@@ -31,7 +31,7 @@ export function DeleteProjectModal({ id }: { id: string }) {
       });
       push("/projects");
       utils.project.get.invalidate();
-      utils.project.overview.invalidate();
+      utils.overview.get.invalidate();
     },
   });
   return (

@@ -41,6 +41,7 @@ export function AddChannelModal() {
         description: `We have succcessfully created channel ${variables.name}!`,
       });
       utils.channel.get.invalidate();
+      utils.overview.get.invalidate();
     },
   });
 

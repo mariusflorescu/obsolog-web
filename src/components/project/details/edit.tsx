@@ -42,7 +42,7 @@ export function EditProjectModal({ id }: { id: string }) {
         description: `We have succcessfully updated your project ${variables.name}!`,
       });
       utils.project.get.invalidate();
-      utils.project.overview.invalidate();
+      utils.overview.get.invalidate();
       utils.project.getProject.invalidate({ id });
     },
   });

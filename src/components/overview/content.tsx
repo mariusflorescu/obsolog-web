@@ -5,7 +5,7 @@ import { Spinner } from "../ui/spinner";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 
 export function Content() {
-  const { data, isFetching } = trpc.project.overview.useQuery();
+  const { data, isFetching } = trpc.overview.get.useQuery();
 
   if (isFetching) {
     return <Spinner />;
@@ -19,6 +19,14 @@ export function Content() {
         </CardHeader>
         <CardContent className="flex justify-center text-4xl font-bold">
           {data?.numOfProjects}
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Number of Channels</CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center text-4xl font-bold">
+          {data?.numOfChannels}
         </CardContent>
       </Card>
     </div>

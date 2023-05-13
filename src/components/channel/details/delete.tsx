@@ -31,6 +31,7 @@ export function DeleteChannelModal({ id }: { id: string }) {
       });
       push("/overview");
       utils.channel.get.invalidate();
+      utils.overview.get.invalidate();
     },
   });
   return (
