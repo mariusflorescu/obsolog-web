@@ -42,6 +42,7 @@ model Project {
 model Channel {
   id   String @id @default(cuid())
   name String
+  createdAt   DateTime @default(now())
 
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)

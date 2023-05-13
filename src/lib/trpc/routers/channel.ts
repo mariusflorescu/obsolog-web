@@ -48,4 +48,25 @@ export const channelRouter = t.router({
         success: true,
       };
     }),
+  getChannel: t.procedure
+    .use(auth)
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      if (!ctx.tenant?.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Channel actions require a tenant",
+        });
+      }
+
+      return db.channel.findUnique({
+        select: {
+          name: true,
+          createdAt: true,
+        },
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 });
