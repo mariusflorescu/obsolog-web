@@ -75,7 +75,7 @@ export function EditProjectModal({ id }: { id: string }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Project</DialogTitle>
+          <DialogTitle>Edit Project</DialogTitle>
         </DialogHeader>
         <form
           className="mt-8 flex flex-col gap-4"
