@@ -21,6 +21,7 @@ model Tenant {
   plan Plan @default(HOBBY)
 
   project Project[]
+  channel Channel[]
 
   @@index([id, slug])
 }
@@ -35,5 +36,16 @@ model Project {
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
+  @@index([tenantId])
+}
+
+model Channel {
+  id   String @id @default(cuid())
+  name String
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([name, tenantId])
   @@index([tenantId])
 }
