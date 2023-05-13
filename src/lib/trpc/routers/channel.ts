@@ -29,7 +29,7 @@ export const channelRouter = t.router({
         name: z.string().regex(/^[a-z\.]+$/),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       if (!ctx.tenant?.id) {
         throw new TRPCError({
           code: "BAD_REQUEST",

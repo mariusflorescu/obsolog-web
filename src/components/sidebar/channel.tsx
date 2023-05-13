@@ -5,6 +5,7 @@ import { Icons } from "../ui/icons";
 import { Button } from "../ui/button";
 import { trpc } from "~/lib/trpc/client";
 import { Skeleton } from "../ui/skeleton";
+import { AddChannelModal } from "../channel/add";
 
 export function ChannelList() {
   const { data, isFetching } = trpc.channel.get.useQuery();
@@ -13,9 +14,7 @@ export function ChannelList() {
     <div>
       <div className="flex items-center justify-between text-muted-foreground text-sm">
         <span className="font-semibold">Channels</span>
-        <Button className="h-6" size="sm" variant="ghost">
-          <Icons.plus className="w-4 h-4" />
-        </Button>
+        <AddChannelModal />
       </div>
       <ul className="mt-4 flex flex-col gap-4 list-none text-zinc-600 dark:text-zinc-400">
         {isFetching && (
