@@ -13,6 +13,7 @@ import { Spinner } from "~/components/ui/spinner";
 import { trpc } from "~/lib/trpc/client";
 import { DeleteProjectModal } from "./delete";
 import { EditProjectModal } from "./edit";
+import { format } from "date-fns";
 
 export function Header() {
   const params = useParams();
@@ -37,6 +38,9 @@ export function Header() {
             <Anchor href={data?.url} target="_blank">
               {data?.url}
             </Anchor>
+            <div className="italic">
+              Created on {format(data!.createdAt, "dd/MM/yyyy")}
+            </div>
           </CardDescription>
         </div>
         <div className="flex gap-2 items-center">
