@@ -13,6 +13,10 @@ export const channelRouter = t.router({
     }
 
     return db.channel.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
       where: {
         tenantId: ctx.tenant.id,
       },

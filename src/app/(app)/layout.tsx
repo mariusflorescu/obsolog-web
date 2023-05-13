@@ -1,15 +1,18 @@
 import { SignIn, SignedIn, SignedOut } from "@clerk/nextjs/app-beta";
-import { Sidebar } from "./sidebar";
+import { Sidebar } from "../../components/sidebar";
 import { Toaster } from "~/components/ui/toaster";
+import { ReactQueryProvider } from "~/providers/react-query";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <SignedIn>
-        <div className="h-screen flex">
-          <Sidebar />
-          <main className="w-full px-12">{children}</main>
-        </div>
+        <ReactQueryProvider>
+          <div className="h-screen flex">
+            <Sidebar />
+            <main className="w-full px-12">{children}</main>
+          </div>
+        </ReactQueryProvider>
         <Toaster />
       </SignedIn>
       <SignedOut>
