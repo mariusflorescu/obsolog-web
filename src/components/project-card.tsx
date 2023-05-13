@@ -31,7 +31,7 @@ export function ProjectCard({ id, name, description, url }: Props) {
           </Anchor>
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-8">
+      <CardContent className="flex flex-col gap-8 justify-between">
         <p className="text-sm text-muted-foreground">{description}</p>
         <div className="flex justify-end">
           <Button onClick={() => push(`/projects/${id}`)}>View Project</Button>
