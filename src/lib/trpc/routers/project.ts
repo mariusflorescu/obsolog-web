@@ -54,6 +54,28 @@ export const projectRouter = t.router({
       },
     });
   }),
+  deleteProject: t.procedure
+    .use(auth)
+    .input(z.object({ projectId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.tenant?.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Project actions require a tenant",
+        });
+      }
+
+      await db.project.delete({
+        where: {
+          id: input.projectId,
+          tenantId: ctx.tenant.id,
+        },
+      });
+
+      return {
+        success: true,
+      };
+    }),
   overview: t.procedure.use(auth).query(async ({ ctx }) => {
     if (!ctx.tenant?.id) {
       throw new TRPCError({
