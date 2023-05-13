@@ -1,4 +1,4 @@
-import { AddProjectModal } from "~/components/add-project-modal";
+import { AddProjectModal } from "~/components/project/add-project/modal";
 import {
   Card,
   CardContent,

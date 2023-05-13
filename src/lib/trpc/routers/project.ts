@@ -17,7 +17,7 @@ export const projectRouter = t.router({
       if (!ctx.tenant?.id) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Project creation requires a tenant",
+          message: "Project actions require a tenant",
         });
       }
 
@@ -38,7 +38,7 @@ export const projectRouter = t.router({
     if (!ctx.tenant?.id) {
       throw new TRPCError({
         code: "BAD_REQUEST",
-        message: "Project creation requires a tenant",
+        message: "Project actions require a tenant",
       });
     }
 
@@ -53,5 +53,26 @@ export const projectRouter = t.router({
         tenantId: ctx.tenant.id,
       },
     });
+  }),
+  overview: t.procedure.use(auth).query(async ({ ctx }) => {
+    if (!ctx.tenant?.id) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Project actions require a tenant",
+      });
+    }
+
+    const numOfProjects = await db.project.aggregate({
+      _count: {
+        id: true,
+      },
+      where: {
+        tenantId: ctx.tenant.id,
+      },
+    });
+
+    return {
+      numOfProjects: numOfProjects._count.id,
+    };
   }),
 });

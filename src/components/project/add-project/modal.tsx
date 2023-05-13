@@ -16,7 +16,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useToast } from "~/hooks/use-toast";
 import { trpc } from "~/lib/trpc/client";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "../../ui/textarea";
 
 const projectSchema = z.object({
   name: z.string().nonempty("This field must not be empty"),

@@ -1,5 +1,5 @@
-import { Header } from "./header";
-import { ProjectsView } from "./projects";
+import { Header } from "../../../../components/project/header";
+import { ProjectsView } from "../../../../components/project/projects";
 
 export default function Projects() {
   return (

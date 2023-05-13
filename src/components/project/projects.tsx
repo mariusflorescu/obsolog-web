@@ -2,7 +2,7 @@
 
 import { trpc } from "~/lib/trpc/client";
 import { AddProject } from "./add-project";
-import { ProjectCard } from "~/components/project-card";
+import { ProjectCard } from "~/components/project/project-card";
 import { Spinner } from "~/components/ui/spinner";
 
 export function ProjectsView() {
