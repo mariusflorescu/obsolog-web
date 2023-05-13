@@ -21,7 +21,17 @@ export const ReactQueryProvider: React.FC<PropsWithChildren> = ({
     return `http://localhost:${process.env.PORT ?? 3000}`;
   }
 
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 5 * (60 * 1000),
+            cacheTime: 10 * (60 * 1000),
+          },
+        },
+      })
+  );
   const [trpcClient] = useState(() =>
     trpc.createClient({
       transformer: SuperJSON,

@@ -48,7 +48,8 @@ export function AddProjectModal({
         title: "Project created",
         description: `We have succcessfully created project ${variables.name}!`,
       });
-      utils.project.invalidate();
+      utils.project.get.invalidate();
+      utils.project.overview.invalidate();
     },
   });
 
