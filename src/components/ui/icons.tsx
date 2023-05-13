@@ -9,6 +9,7 @@ import {
   Hash,
   Plus,
   Trash2,
+  Edit3,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -23,4 +24,5 @@ export const Icons = {
   hash: Hash,
   plus: Plus,
   trash: Trash2,
+  edit: Edit3,
 };

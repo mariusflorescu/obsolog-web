@@ -1,6 +1,6 @@
 import { db } from "~/lib/db";
 import { auth, t } from "../trpc";
-import { z } from "zod";
+import { string, z } from "zod";
 import { TRPCError } from "@trpc/server";
 
 export const projectRouter = t.router({
@@ -76,6 +76,39 @@ export const projectRouter = t.router({
           id: input.id,
         },
       });
+    }),
+  update: t.procedure
+    .use(auth)
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        url: z.string().url(),
+        description: z.string().nullable(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.tenant?.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Project actions require a tenant",
+        });
+      }
+
+      await db.project.update({
+        data: {
+          name: input.name,
+          url: input.url,
+          description: input.description,
+        },
+        where: {
+          id: input.id,
+        },
+      });
+
+      return {
+        success: true
+      }
     }),
   deleteProject: t.procedure
     .use(auth)

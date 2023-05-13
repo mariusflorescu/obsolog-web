@@ -18,7 +18,7 @@ import { Icons } from "~/components/ui/icons";
 import { useToast } from "~/hooks/use-toast";
 import { trpc } from "~/lib/trpc/client";
 
-export function Delete({ id }: { id: string }) {
+export function DeleteProjectModal({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const { push } = useRouter();
   const utils = trpc.useContext();

@@ -11,7 +11,8 @@ import {
 } from "~/components/ui/card";
 import { Spinner } from "~/components/ui/spinner";
 import { trpc } from "~/lib/trpc/client";
-import { Delete } from "./delete";
+import { DeleteProjectModal } from "./delete";
+import { EditProjectModal } from "./edit";
 
 export function Header() {
   const params = useParams();
@@ -39,7 +40,8 @@ export function Header() {
           </CardDescription>
         </div>
         <div className="flex gap-2 items-center">
-          <Delete id={id as string} />
+          <EditProjectModal id={id as string} />
+          <DeleteProjectModal id={id as string} />
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-8 justify-between">
