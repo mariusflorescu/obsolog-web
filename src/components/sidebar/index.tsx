@@ -22,6 +22,9 @@ export function Sidebar() {
           >
             Projects
           </MainItem>
+          <MainItem icon={<Icons.key className="w-5 h-5" />} href="/api-keys">
+            API Keys
+          </MainItem>
           <MainItem
             icon={<Icons.organization className="w-5 h-5" />}
             href="/organization"

@@ -10,6 +10,9 @@ import {
   Plus,
   Trash2,
   Edit3,
+  Key,
+  ClipboardCopy,
+  ClipboardCheck,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -25,4 +28,7 @@ export const Icons = {
   plus: Plus,
   trash: Trash2,
   edit: Edit3,
+  key: Key,
+  clipboardCopy: ClipboardCopy,
+  clipboardCheck: ClipboardCheck,
 };

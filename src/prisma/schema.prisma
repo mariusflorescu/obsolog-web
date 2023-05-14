@@ -12,6 +12,12 @@ enum Plan {
   HOBBY
 }
 
+enum Environment {
+  DEVELOPMENT
+  STAGING
+  PRODUCTION
+}
+
 model Tenant {
   id        String   @id
   slug      String?  @unique
@@ -22,6 +28,7 @@ model Tenant {
 
   project Project[]
   channel Channel[]
+  apiKey  ApiKey[]
 
   @@index([id, slug])
 }
@@ -36,17 +43,37 @@ model Project {
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
+  apiKey ApiKey[]
+
   @@index([tenantId])
 }
 
 model Channel {
-  id   String @id @default(cuid())
-  name String
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
 
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@unique([name, tenantId])
+  @@index([tenantId])
+}
+
+model ApiKey {
+  id          String      @id
+  name        String
+  description String?
+  environment Environment
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now())
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
   @@index([tenantId])
 }
