@@ -30,6 +30,7 @@ export function RevokeApiKeyModal({ id, open, setOpen }: Props) {
         description: "We have successfully revoked your API Key!",
       });
       utils.apiKey.get.invalidate();
+      utils.overview.get.invalidate();
     },
   });
   return (

@@ -71,6 +71,7 @@ export function AddApiKeyModal() {
       setOpenInitialDialog(false);
       setOpenSecondDialog(true);
       utils.apiKey.get.invalidate();
+      utils.overview.get.invalidate();
     },
     onError(err) {
       console.log(err);

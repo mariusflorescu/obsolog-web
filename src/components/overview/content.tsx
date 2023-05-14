@@ -29,31 +29,44 @@ export function Content() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-col gap-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Number of Projects</CardTitle>
-        </CardHeader>
-        <CardContent className="flex justify-center text-4xl font-bold">
-          {data?.numOfProjects}
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Number of Channels</CardTitle>
-        </CardHeader>
-        <CardContent className="flex justify-center text-4xl font-bold">
-          {data?.numOfChannels}
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Number of API Keys</CardTitle>
-        </CardHeader>
-        <CardContent className="flex justify-center text-4xl font-bold">
-          {data?.numOfApiKeys}
-        </CardContent>
-      </Card>
+    <div className="flex flex-col gap-4">
+      {data?.numOfApiKeys === 0 && (
+        <Alert>
+          <AlertOctagon className="h-5 w-5" />
+          <AlertTitle>Heads up!</AlertTitle>
+          <AlertDescription>
+            It looks like you don't have any API Keys.
+            <br />
+            In order to keep receiving new insights you need to have one.
+          </AlertDescription>
+        </Alert>
+      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-col gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Number of Projects</CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center text-4xl font-bold">
+            {data?.numOfProjects}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Number of Channels</CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center text-4xl font-bold">
+            {data?.numOfChannels}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Number of API Keys</CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center text-4xl font-bold">
+            {data?.numOfApiKeys}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
