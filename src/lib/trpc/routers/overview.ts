@@ -27,10 +27,19 @@ export const overviewRouter = t.router({
         tenantId: ctx.tenant.id,
       },
     });
+    const numOfApiKeys = await db.apiKey.aggregate({
+      _count: {
+        id: true,
+      },
+      where: {
+        tenantId: ctx.tenant.id,
+      },
+    });
 
     return {
       numOfProjects: numOfProjects._count.id || 0,
       numOfChannels: numOfChannels._count.id || 0,
+      numOfApiKeys: numOfApiKeys._count.id || 0,
     };
   }),
 });

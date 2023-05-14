@@ -46,6 +46,14 @@ export function Content() {
           {data?.numOfChannels}
         </CardContent>
       </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Number of API Keys</CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center text-4xl font-bold">
+          {data?.numOfApiKeys}
+        </CardContent>
+      </Card>
     </div>
   );
 }
