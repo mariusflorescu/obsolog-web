@@ -16,9 +16,15 @@ export const apiKeyRouter = t.router({
 
     return db.apiKey.findMany({
       select: {
+        id: true,
         name: true,
         description: true,
         environment: true,
+        project: {
+          select: {
+            name: true,
+          },
+        },
         createdAt: true,
         updatedAt: true,
       },
