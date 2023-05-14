@@ -43,7 +43,7 @@ const ENVIRONMENTS_SELECT = [
     label: "Development",
   },
   {
-    value: "STAGIN",
+    value: "STAGING",
     label: "Staging",
   },
   {

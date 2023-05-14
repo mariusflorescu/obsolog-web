@@ -10,7 +10,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <ReactQueryProvider>
           <div className="h-screen flex">
             <Sidebar />
-            <main className="w-full px-12">{children}</main>
+            <main className="w-full px-4 md:px-8 lg:px-12 overflow-x-hidden">
+              {children}
+            </main>
           </div>
         </ReactQueryProvider>
         <Toaster />
