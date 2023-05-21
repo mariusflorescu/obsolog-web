@@ -82,10 +82,11 @@ model ApiKey {
 }
 
 model Event {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
   name        String
   description String?
   user        String?
+  createdAt   DateTime @default(now())
 
   channelId String
   channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
