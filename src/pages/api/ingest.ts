@@ -12,8 +12,9 @@ const bodyObject = z.object({
 });
 
 const cors = Cors({
-  methods: ["POST"],
+  methods: ["POST", 'OPTIONS'],
   origin: "*",
+  
 });
 
 function runCorsMiddleware(
