@@ -91,6 +91,7 @@ export const columns: ColumnDef<ApiKeySchema>[] = [
       const [open, setOpen] = useState(false);
       const apiKey = row.original;
 
+      // eslint-disable-next-line
       return (
         <>
           <DropdownMenu>
