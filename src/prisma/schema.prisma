@@ -29,6 +29,7 @@ model Tenant {
   project Project[]
   channel Channel[]
   apiKey  ApiKey[]
+  event   Event[]
 
   @@index([id, slug])
 }
@@ -56,6 +57,8 @@ model Channel {
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
+  event Event[]
+
   @@unique([name, tenantId])
   @@index([tenantId])
 }
@@ -75,5 +78,21 @@ model ApiKey {
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
+  @@index([tenantId])
+}
+
+model Event {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  user        String?
+
+  channelId String
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([channelId])
   @@index([tenantId])
 }
