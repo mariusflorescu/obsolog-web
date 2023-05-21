@@ -46,7 +46,7 @@ export function RevokeApiKeyModal({ id, open, setOpen }: Props) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={() => mutate({ id })}>
-            I'm sure
+            I&apos;m sure
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
