@@ -11,34 +11,11 @@ const bodyObject = z.object({
   user: z.string().optional(),
 });
 
-const cors = Cors({
-  methods: ["POST", "OPTIONS"],
-  origin: "*",
-});
-
-function runCorsMiddleware(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  fn: Function
-) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result: any) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-
-      return resolve(result);
-    });
-  });
-}
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    await runCorsMiddleware(req, res, cors);
-
     const key = req.headers["x-obsolog-token"] as string | undefined;
 
     if (!key) {
