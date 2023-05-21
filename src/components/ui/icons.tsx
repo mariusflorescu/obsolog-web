@@ -13,6 +13,8 @@ import {
   Key,
   ClipboardCopy,
   ClipboardCheck,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -31,4 +33,6 @@ export const Icons = {
   key: Key,
   clipboardCopy: ClipboardCopy,
   clipboardCheck: ClipboardCheck,
+  arrowRight: ChevronRight,
+  arrowLeft: ChevronLeft,
 };

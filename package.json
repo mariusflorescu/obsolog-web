@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "dotenv -e .env.local -- pnpx prisma db push"
+    "db:push": "dotenv -e .env.local -- pnpx prisma db push",
+    "db:seed": "dotenv -e .env.local -- pnpx prisma db seed"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.16.4",
@@ -25,6 +26,7 @@
     "@t3-oss/env-nextjs": "^0.2.2",
     "@tanstack/react-query": "^4.29.5",
     "@tanstack/react-table": "^8.9.1",
+    "@tremor/react": "^2.7.0",
     "@trpc/client": "^10.23.0",
     "@trpc/next": "^10.23.0",
     "@trpc/react-query": "^10.23.0",
@@ -58,11 +60,15 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.1",
     "@types/cors": "^2.8.13",
     "@types/uuid": "^9.0.1",
-    "dotenv-cli": "^7.2.1"
+    "dotenv-cli": "^7.2.1",
+    "ts-node": "^10.9.1",
+    "tsx": "^3.12.7"
   },
   "prisma": {
-    "schema": "src/prisma/schema.prisma"
+    "schema": "src/prisma/schema.prisma",
+    "seed": "tsx src/prisma/seed.ts"
   }
 }

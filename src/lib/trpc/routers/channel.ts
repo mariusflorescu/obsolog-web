@@ -2,6 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { auth, t } from "../trpc";
 import { db } from "~/lib/db";
 import { z } from "zod";
+import { format, sub } from "date-fns";
 
 export const channelRouter = t.router({
   get: t.procedure.use(auth).query(async ({ ctx }) => {
@@ -112,6 +113,56 @@ export const channelRouter = t.router({
 
       return {
         success: true,
+      };
+    }),
+  channelActivity: t.procedure
+    .use(auth)
+    .input(
+      z.object({
+        id: z.string().optional().nullable(),
+        from: z.number().positive(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      if (!ctx.tenant?.id || !input.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Channel actions require a tenant",
+        });
+      }
+
+      const from = sub(Date.now(), {
+        days: input.from,
+      });
+
+      const events = await db.event.findMany({
+        include: {
+          channel: {
+            select: {
+              name: true,
+            },
+          },
+        },
+        where: {
+          channelId: input.id,
+          tenantId: ctx.tenant.id,
+          createdAt: {
+            gt: from,
+          },
+        },
+      });
+      const series =
+        (await db.$queryRaw`SELECT COUNT(DATE(createdAt)) as numberOfEvents, DATE(createdAt) as createdAt FROM obsolog.\`Event\` WHERE createdAt > ${from} GROUP BY DATE(createdAt)`) as {
+          numberOfEvents: BigInt;
+          createdAt: Date;
+        }[];
+
+      return {
+        series: series.map((entry) => ({
+          "Number of Events": Number(entry.numberOfEvents),
+          createdAt: format(entry.createdAt, "dd-MM-yyyy"),
+        })),
+        events,
       };
     }),
 });
