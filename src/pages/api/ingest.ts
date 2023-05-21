@@ -2,6 +2,7 @@ import { createHash } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { db } from "~/lib/db";
+import Cors from "cors";
 
 const bodyObject = z.object({
   channel: z.string(),
@@ -10,27 +11,10 @@ const bodyObject = z.object({
   user: z.string().optional(),
 });
 
-const allowCors =
-  (fn: any) => async (req: NextApiRequest, res: NextApiResponse) => {
-    //@ts-ignore
-    res.setHeader("Access-Control-Allow-Credentials", true);
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-    );
-    if (req.method === "OPTIONS") {
-      res.status(200).end();
-      return;
-    }
-    return await fn(req, res);
-  };
-
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     const key = req.headers["x-obsolog-token"] as string | undefined;
 
@@ -90,5 +74,3 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(500).send("Something went wrong...");
   }
 }
-
-export default allowCors(handler);
