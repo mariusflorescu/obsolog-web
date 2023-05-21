@@ -20,6 +20,7 @@ export function ProjectsView() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-col gap-4">
       {data?.map((project) => (
         <ProjectCard
+          key={project.id}
           id={project.id}
           name={project.name}
           url={project.url}

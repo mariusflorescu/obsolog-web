@@ -87,6 +87,7 @@ export const columns: ColumnDef<ApiKeySchema>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      // eslint-disable-next-line
       const [open, setOpen] = useState(false);
       const apiKey = row.original;
 

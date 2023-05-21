@@ -19,7 +19,7 @@ export function Content() {
         <AlertOctagon className="h-5 w-5" />
         <AlertTitle>Heads up!</AlertTitle>
         <AlertDescription>
-          It looks like you haven't created any projects or channels yet.
+          It looks like you haven&apos;t created any projects or channels yet.
           <br />
           In order to view overview insights, you need to have those and then
           start sending events with <b>Obsolog</b>!
@@ -35,7 +35,7 @@ export function Content() {
           <AlertOctagon className="h-5 w-5" />
           <AlertTitle>Heads up!</AlertTitle>
           <AlertDescription>
-            It looks like you don't have any API Keys.
+            It looks like you don&apos;t have any API Keys.
             <br />
             In order to keep receiving new insights you need to have one.
           </AlertDescription>

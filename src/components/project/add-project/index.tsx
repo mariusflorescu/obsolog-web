@@ -15,8 +15,8 @@ export function AddProject() {
           No projects found
         </CardTitle>
         <CardDescription className="text-center">
-          But there is no problem, click the "Add" button to add your first
-          project!
+          But there is no problem, click the &ldquo;Add&ldquo; button to add your
+          first project!
         </CardDescription>
       </CardHeader>
       <CardContent className="flex justify-center">

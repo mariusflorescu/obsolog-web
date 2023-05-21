@@ -11,8 +11,8 @@ export function Header() {
       <CardHeader>
         <CardTitle>Overview</CardTitle>
         <CardDescription className="mt-2">
-          Your "home", see general statistics of things that happen all across
-          your tenant!
+          Your &ldquo;home&ldquo;, see general statistics of things that happen
+          all across your tenant!
         </CardDescription>
       </CardHeader>
     </Card>
