@@ -12,7 +12,7 @@ const bodyObject = z.object({
 });
 
 const cors = Cors({
-  methods: ["GET"],
+  methods: ["POST"],
   origin: "*",
 });
 
