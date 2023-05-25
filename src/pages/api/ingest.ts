@@ -2,7 +2,6 @@ import { createHash } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { db } from "~/lib/db";
-import Cors from "cors";
 
 const bodyObject = z.object({
   channel: z.string(),
