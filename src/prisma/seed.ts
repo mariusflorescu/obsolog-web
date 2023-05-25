@@ -3,14 +3,12 @@ import { v4 as uuid } from "uuid";
 import { db } from "~/lib/db";
 
 const TENANT_ID = "user_2PjRZEDyTMzAXB42Mu9jrUGrZbf";
-const CHANNEL_ID = "clhx9kyl80001vlz2scbg1p4a";
+const CHANNEL_ID = "cli378pev0001vl56rhr7bd41";
 const EVENT_NAME = "User Created";
 
 async function main() {
-  console.log("Starting seed");
-
-  for (let i = 0; i < 300; ++i) {
-    const date = faker.date.between({ from: "2023-04-01", to: "2023-05-21" });
+  for (let i = 0; i < 600; ++i) {
+    const date = faker.date.between({ from: "2023-04-01", to: "2023-05-31" });
     const id = uuid();
 
     await db.event.create({
@@ -23,8 +21,6 @@ async function main() {
       },
     });
   }
-
-  console.log("Finished seed");
 }
 
 main()

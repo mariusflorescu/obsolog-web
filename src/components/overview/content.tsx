@@ -5,6 +5,7 @@ import { trpc } from "~/lib/trpc/client";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Spinner } from "../ui/spinner";
+import { BarChart } from "./bar-chart";
 
 export function Content() {
   const { data, isFetching } = trpc.overview.get.useQuery();
@@ -67,6 +68,7 @@ export function Content() {
           </CardContent>
         </Card>
       </div>
+      <BarChart data={data?.barSeries || []} />
     </div>
   );
 }

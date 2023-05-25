@@ -35,11 +35,20 @@ export const overviewRouter = t.router({
         tenantId: ctx.tenant.id,
       },
     });
+    const barSeries =
+      (await db.$queryRaw`SELECT COUNT(e.id) as numberOfEvents, c.name as channelName FROM obsolog.\`Event\` e INNER JOIN obsolog.\`Channel\` c ON c.id = e.channelId GROUP BY c.id;`) as {
+        numberOfEvents: BigInt;
+        channelName: string;
+      }[];
 
     return {
       numOfProjects: numOfProjects._count.id || 0,
       numOfChannels: numOfChannels._count.id || 0,
       numOfApiKeys: numOfApiKeys._count.id || 0,
+      barSeries: barSeries.map((entry) => ({
+        "Number of Events": Number(entry.numberOfEvents),
+        "Channel Name": entry.channelName,
+      })),
     };
   }),
 });
