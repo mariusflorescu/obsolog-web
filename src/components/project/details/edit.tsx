@@ -64,7 +64,7 @@ export function EditProjectModal({ id }: { id: string }) {
     if (data) {
       reset(data);
     }
-  }, [data]);
+  }, [data, reset]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
