@@ -4,11 +4,12 @@ import { Event } from "@prisma/client";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
-export type TableData = Event & {
-  channel: {
-    name: string;
-  };
-};
+export type TableData =
+  | Event & {
+      channel: {
+        name: string;
+      };
+    };
 
 type Props = {
   data: TableData[] | undefined;
