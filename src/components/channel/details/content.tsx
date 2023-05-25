@@ -86,8 +86,7 @@ export function Content() {
         />
       </div>
       <Chart data={data?.series || []} />
-      {/* @ts-ignore */}
-      <Table data={data?.eventsa} />
+      <Table data={data?.events} />
     </>
   );
 }
