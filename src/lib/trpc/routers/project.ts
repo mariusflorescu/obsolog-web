@@ -1,7 +1,9 @@
+import { TRPCError } from "@trpc/server";
+import { format } from "date-fns";
+import { z } from "zod";
 import { db } from "~/lib/db";
 import { auth, t } from "../trpc";
-import { string, z } from "zod";
-import { TRPCError } from "@trpc/server";
+import { groupBy, uniq } from "lodash";
 
 export const projectRouter = t.router({
   create: t.procedure
@@ -65,8 +67,9 @@ export const projectRouter = t.router({
         });
       }
 
-      return db.project.findUnique({
+      const project = await db.project.findUnique({
         select: {
+          id: true,
           name: true,
           url: true,
           description: true,
@@ -76,6 +79,77 @@ export const projectRouter = t.router({
           id: input.id,
         },
       });
+
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project Not Found",
+        });
+      }
+
+      const projectApiKeys = await db.apiKey.findMany({
+        where: {
+          projectId: project.id,
+        },
+      });
+      const apiKeysIds = projectApiKeys.map((key) => key.id);
+      const apiKeysNames = projectApiKeys.map((key) => key.name);
+      const parsedKeys = apiKeysIds.map((k) => `'${k}'`);
+      const apiKeysClause = `(${parsedKeys.join(", ")})`;
+
+      const events = await db.event.findMany({
+        where: {
+          apiKeyId: {
+            in: apiKeysIds,
+          },
+        },
+      });
+
+      const query = `SELECT COUNT(DATE(e.createdAt)) as numberOfEvents, DATE(e.createdAt) as createdAt, ak.name as keyName from obsolog.\`Event\` e INNER JOIN obsolog.\`ApiKey\` ak ON ak.id=e.apiKeyId WHERE ak.id IN ${apiKeysClause} GROUP BY DATE(e.createdAt), ak.name`;
+      const rawSeries = (await db.$queryRawUnsafe(query)) as {
+        numberOfEvents: bigint;
+        createdAt: Date;
+        keyName: string;
+      }[];
+
+      const parsedSeries = rawSeries.map((entry) => ({
+        "Number of Events": Number(entry.numberOfEvents),
+        "Key Name": entry.keyName,
+        createdAt: format(entry.createdAt, "dd/MM/yyyy"),
+      }));
+
+      const groupedSeries = groupBy(
+        parsedSeries,
+        (tmpSeries) => tmpSeries["createdAt"]
+      );
+      const groupedSeriesKeys = Object.keys(groupedSeries);
+      const groupedSeriesParsed = groupedSeriesKeys.map((k) => {
+        const createdAt = k;
+        const entriesForDate = groupedSeries[k];
+
+        const values = apiKeysNames.reduce(
+          (prev, acc) => ({
+            ...prev,
+            [acc]:
+              entriesForDate.find((v) => v["Key Name"] === acc)?.[
+                "Number of Events"
+              ] ?? 0,
+          }),
+          {}
+        );
+
+        return {
+          createdAt,
+          ...values,
+        };
+      });
+
+      return {
+        project,
+        events,
+        series: groupedSeriesParsed,
+        keyNames: apiKeysNames,
+      };
     }),
   update: t.procedure
     .use(auth)

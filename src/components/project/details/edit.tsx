@@ -34,6 +34,7 @@ export function EditProjectModal({ id }: { id: string }) {
   const { toast } = useToast();
   const utils = trpc.useContext();
   const { data } = trpc.project.getProject.useQuery({ id });
+  const project = data?.project
   const { mutate, isLoading } = trpc.project.update.useMutation({
     onSuccess(_, variables) {
       setOpen(false);
@@ -50,9 +51,9 @@ export function EditProjectModal({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm<ProjectSchema>({
     defaultValues: {
-      name: data?.name ?? "",
-      url: data?.url ?? "",
-      description: data?.description ?? null,
+      name: project?.name ?? "",
+      url: project?.url ?? "",
+      description: project?.description ?? null,
     },
     resolver: zodResolver(projectSchema),
   });
@@ -61,10 +62,10 @@ export function EditProjectModal({ id }: { id: string }) {
     mutate({ id, name, url, description });
 
   useEffect(() => {
-    if (data) {
-      reset(data);
+    if (project) {
+      reset(project);
     }
-  }, [data, reset]);
+  }, [project, reset]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

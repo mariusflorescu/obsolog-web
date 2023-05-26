@@ -24,6 +24,7 @@ export function Header() {
       enabled: typeof id !== "undefined",
     }
   );
+  const project = data?.project;
 
   if (isFetching) {
     return <Spinner />;
@@ -33,13 +34,13 @@ export function Header() {
     <Card>
       <CardHeader className="flex flex-row justify-between gap-2">
         <div>
-          <CardTitle>{data?.name}</CardTitle>
+          <CardTitle>{project?.name}</CardTitle>
           <CardDescription>
-            <Anchor href={data?.url} target="_blank">
-              {data?.url}
+            <Anchor href={project?.url} target="_blank">
+              {project?.url}
             </Anchor>
             <div className="italic">
-              Created on {format(data!.createdAt, "dd/MM/yyyy")}
+              Created on {format(project!.createdAt, "dd/MM/yyyy")}
             </div>
           </CardDescription>
         </div>
@@ -49,7 +50,7 @@ export function Header() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-8 justify-between">
-        <p className="text-sm text-muted-foreground">{data?.description}</p>
+        <p className="text-sm text-muted-foreground">{project?.description}</p>
       </CardContent>
     </Card>
   );

@@ -41,6 +41,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.188.0",
     "micro": "^10.0.1",
     "next": "13.4.3",
@@ -62,6 +63,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.0.1",
     "@types/cors": "^2.8.13",
+    "@types/lodash": "^4.14.195",
     "@types/uuid": "^9.0.1",
     "dotenv-cli": "^7.2.1",
     "ts-node": "^10.9.1",
