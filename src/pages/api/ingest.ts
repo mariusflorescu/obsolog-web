@@ -59,6 +59,7 @@ export default async function handler(
 
     await db.event.create({
       data: {
+        apiKeyId: apiKey.id,
         name: bodyParsed.data.name,
         description: bodyParsed.data.description,
         user: bodyParsed.data.user,
