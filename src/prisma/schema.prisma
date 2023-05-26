@@ -77,6 +77,8 @@ model ApiKey {
   projectId String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
+  event Event[]
+
   @@index([projectId])
   @@index([tenantId])
 }
@@ -88,12 +90,16 @@ model Event {
   user        String?
   createdAt   DateTime @default(now())
 
+  apiKeyId String
+  apiKey   ApiKey @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+
   channelId String
   channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
 
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
+  @@index([apiKeyId])
   @@index([channelId])
   @@index([tenantId])
 }
