@@ -77,12 +77,12 @@ export const columns: ColumnDef<ApiKeySchema>[] = [
   {
     accessorKey: "createdAt",
     header: "Created",
-    cell: ({ row }) => format(row.getValue("createdAt"), "dd/MM/yyyy"),
+    cell: ({ row }) => format(row.getValue("createdAt"), "dd/MM/yyyy HH:mm"),
   },
   {
     accessorKey: "updatedAt",
     header: "Last Modified",
-    cell: ({ row }) => format(row.getValue("updatedAt"), "dd/MM/yyyy"),
+    cell: ({ row }) => format(row.getValue("updatedAt"), "dd/MM/yyyy HH:mm"),
   },
   {
     id: "actions",

@@ -153,7 +153,7 @@ export const channelRouter = t.router({
         },
       });
       const series =
-        (await db.$queryRaw`SELECT COUNT(DATE(createdAt)) as numberOfEvents, DATE(createdAt) as createdAt FROM obsolog.\`Event\` WHERE createdAt > ${from} AND channelId = ${input.id} GROUP BY DATE(createdAt)`) as {
+        (await db.$queryRaw`SELECT COUNT(DATE(createdAt)) as numberOfEvents, DATE(createdAt) as createdAt FROM obsolog.\`Event\` WHERE createdAt > ${from} AND channelId = ${input.id} GROUP BY DATE(createdAt) ORDER BY DATE(createdAt) ASC`) as {
           numberOfEvents: BigInt;
           createdAt: Date;
         }[];

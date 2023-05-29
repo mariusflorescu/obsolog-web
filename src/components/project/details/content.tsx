@@ -8,10 +8,14 @@ import { Table } from "./table";
 export function Content() {
   const params = useParams();
   const id = params?.id;
-  const { data } = trpc.project.getProject.useQuery(
+  const { data, isFetching, isLoading } = trpc.project.getProject.useQuery(
     { id: id as string },
     { enabled: false }
   );
+
+  if (isFetching || isLoading) {
+    return null;
+  }
 
   return (
     <>

@@ -20,6 +20,6 @@ export const columns: ColumnDef<TableData>[] = [
   {
     accessorKey: "createdAt",
     header: "Created",
-    cell: ({ row }) => format(row.getValue("createdAt"), "dd/MM/yyyy"),
+    cell: ({ row }) => format(row.getValue("createdAt"), "dd/MM/yyyy HH:mm"),
   },
 ];
