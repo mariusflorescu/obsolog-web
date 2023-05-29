@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { useMemo } from "react";
 
 const SELECT_ITEMS = [
   {
@@ -35,6 +36,7 @@ const SELECT_ITEMS = [
 ];
 
 const contentSchema = z.object({
+  apiKey: z.string().optional(),
   from: z.enum(["7", "30", "60", "90"]),
 });
 
@@ -48,13 +50,29 @@ export function Content() {
     },
     resolver: zodResolver(contentSchema),
   });
-  const selectedValue = Number(watch("from"));
+  const selectedApiKey = watch("apiKey");
+  const selectedDateValue = Number(watch("from"));
   const id = params?.id;
+  const { data: apiKeys } = trpc.project.getApiKeys.useQuery({
+    id: id as string,
+  });
   const { data, isFetching, isLoading } =
     trpc.project.getProjectActivity.useQuery({
       id: id as string,
-      from: selectedValue,
+      from: selectedDateValue,
+      apiKey: selectedApiKey,
     });
+
+  const apiKeysSelectItems = useMemo(
+    () =>
+      apiKeys
+        ? apiKeys.map((apiKey) => ({
+            label: apiKey.name,
+            value: apiKey.id,
+          }))
+        : [],
+    [apiKeys]
+  );
 
   if (isFetching || isLoading) {
     return null;
@@ -62,7 +80,25 @@ export function Content() {
 
   return (
     <>
-      <div className="flex justify-end">
+      <div className="flex gap-2 justify-end">
+        <Controller
+          control={control}
+          name="apiKey"
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} {...field}>
+              <SelectTrigger className="w-64">
+                <SelectValue placeholder="Select API Key" />
+              </SelectTrigger>
+              <SelectContent>
+                {apiKeysSelectItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
         <Controller
           control={control}
           name="from"

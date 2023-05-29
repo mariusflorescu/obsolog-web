@@ -4,6 +4,7 @@ import { groupBy } from "lodash";
 import { z } from "zod";
 import { db } from "~/lib/db";
 import { auth, t } from "../trpc";
+import console from "console";
 
 export const projectRouter = t.router({
   create: t.procedure
@@ -80,9 +81,36 @@ export const projectRouter = t.router({
         },
       });
     }),
+  getApiKeys: t.procedure
+    .use(auth)
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      if (!ctx.tenant?.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Project actions require a tenant",
+        });
+      }
+
+      return await db.apiKey.findMany({
+        select: {
+          id: true,
+          name: true,
+        },
+        where: {
+          projectId: input.id,
+        },
+      });
+    }),
   getProjectActivity: t.procedure
     .use(auth)
-    .input(z.object({ id: z.string(), from: z.number() }))
+    .input(
+      z.object({
+        id: z.string(),
+        from: z.number(),
+        apiKey: z.string().optional(),
+      })
+    )
     .query(async ({ ctx, input }) => {
       if (!ctx.tenant?.id) {
         throw new TRPCError({
@@ -104,12 +132,17 @@ export const projectRouter = t.router({
       const apiKeysNames = projectApiKeys.map((key) => key.name);
       const parsedKeys = apiKeysIds.map((k) => `'${k}'`);
       const apiKeysClause = `(${parsedKeys.join(", ")})`;
+      const apiKeysWhereClause = input.apiKey
+        ? `= '${input.apiKey}'`
+        : `IN ${apiKeysClause}`;
 
       const events = await db.event.findMany({
         where: {
-          apiKeyId: {
-            in: apiKeysIds,
-          },
+          apiKeyId: input.apiKey
+            ? input.apiKey
+            : {
+                in: apiKeysIds,
+              },
           createdAt: {
             gt: from,
           },
@@ -124,7 +157,7 @@ export const projectRouter = t.router({
       const query = `SELECT COUNT(DATE(e.createdAt)) as numberOfEvents, DATE(e.createdAt) as createdAt, ak.name as keyName from obsolog.\`Event\` e INNER JOIN obsolog.\`ApiKey\` ak ON ak.id=e.apiKeyId WHERE e.createdAt > "${format(
         from,
         "yyyy-MM-dd HH:mm:ss"
-      )}" AND ak.id IN ${apiKeysClause} GROUP BY DATE(e.createdAt), ak.name ORDER BY DATE(e.createdAt) ASC`;
+      )}" AND ak.id ${apiKeysWhereClause} GROUP BY DATE(e.createdAt), ak.name ORDER BY DATE(e.createdAt) ASC`;
       const rawSeries = (await db.$queryRawUnsafe(query)) as {
         numberOfEvents: bigint;
         createdAt: Date;
