@@ -3,6 +3,15 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { db } from "~/lib/db";
 import Cors from "cors";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+import { NextResponse } from "next/server";
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  analytics: true,
+  limiter: Ratelimit.fixedWindow(10, "1s"),
+});
 
 const cors = Cors({
   methods: ["POST", "OPTIONS"],
@@ -47,6 +56,21 @@ export default async function handler(
       return res
         .status(401)
         .send("The event should have an x-obsolog-token header");
+    }
+
+    const limit = await ratelimit.limit(key);
+    if (!limit.success) {
+      return NextResponse.json(
+        { error: "Too many requests" },
+        {
+          status: 429,
+          headers: {
+            "RateLimit-Limit": limit.limit.toString(),
+            "RateLimit-Remaining": limit.remaining.toString(),
+            "RateLimit-Reset": limit.reset.toString(),
+          },
+        }
+      );
     }
 
     const body = req.body;
