@@ -137,6 +137,11 @@ export const channelRouter = t.router({
       });
 
       const events = await db.event.findMany({
+        orderBy: [
+          {
+            createdAt: 'desc'
+          }
+        ],
         include: {
           channel: {
             select: {
