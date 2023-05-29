@@ -2,6 +2,30 @@ import { createHash } from "crypto";
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { db } from "~/lib/db";
+import Cors from "cors";
+
+const cors = Cors({
+  methods: ["POST", "OPTIONS"],
+  origin: "*",
+});
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  fn: Function
+) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result: any) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+
+      return resolve(result);
+    });
+  });
+}
 
 const bodyObject = z.object({
   channel: z.string(),
@@ -15,6 +39,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    await runMiddleware(req, res, cors);
+
     const key = req.headers["x-obsolog-token"] as string | undefined;
 
     if (!key) {
