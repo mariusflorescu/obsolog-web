@@ -118,7 +118,7 @@ export function Content() {
           )}
         />
       </div>
-      <Chart series={data?.series || []} keyNames={data?.keyNames || []} />
+      <Chart series={data?.series || []} keyNames={data?.keyNames || []} selectedApiKey={selectedApiKey}/>
       <Table data={data?.events} />
     </>
   );

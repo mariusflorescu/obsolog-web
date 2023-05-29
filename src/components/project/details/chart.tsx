@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 type Props = {
   series: Record<string, string>[];
   keyNames: string[];
+  selectedApiKey?: string;
 };
 
-export function Chart({ series, keyNames }: Props) {
+export function Chart({ series, keyNames, selectedApiKey }: Props) {
   return (
     <Card>
       <CardHeader>
@@ -17,7 +18,7 @@ export function Chart({ series, keyNames }: Props) {
           className="h-72 mt-4"
           data={series}
           index="createdAt"
-          categories={keyNames}
+          categories={selectedApiKey ? [selectedApiKey] : keyNames}
         />
       </CardContent>
     </Card>
