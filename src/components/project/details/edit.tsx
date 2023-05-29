@@ -33,8 +33,10 @@ type ProjectSchema = z.infer<typeof projectSchema>;
 export function EditProjectModal({ id }: { id: string }) {
   const { toast } = useToast();
   const utils = trpc.useContext();
-  const { data } = trpc.project.getProject.useQuery({ id });
-  const project = data?.project
+  const { data: project } = trpc.project.getProject.useQuery(
+    { id },
+    { enabled: false }
+  );
   const { mutate, isLoading } = trpc.project.update.useMutation({
     onSuccess(_, variables) {
       setOpen(false);

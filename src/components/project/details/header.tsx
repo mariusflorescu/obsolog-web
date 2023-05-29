@@ -18,13 +18,9 @@ import { format } from "date-fns";
 export function Header() {
   const params = useParams();
   const id = params?.id;
-  const { data, isFetching } = trpc.project.getProject.useQuery(
-    { id: id as string },
-    {
-      enabled: typeof id !== "undefined",
-    }
-  );
-  const project = data?.project;
+  const { data: project, isFetching } = trpc.project.getProject.useQuery({
+    id: id as string,
+  });
 
   if (isFetching) {
     return <Spinner />;
@@ -40,7 +36,8 @@ export function Header() {
               {project?.url}
             </Anchor>
             <div className="italic">
-              Created on {format(project!.createdAt, "dd/MM/yyyy")}
+              Created on{" "}
+              {project ? format(project!.createdAt, "dd/MM/yyyy") : ""}
             </div>
           </CardDescription>
         </div>

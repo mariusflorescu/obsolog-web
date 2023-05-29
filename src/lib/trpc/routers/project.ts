@@ -1,9 +1,9 @@
 import { TRPCError } from "@trpc/server";
-import { format } from "date-fns";
+import { format, sub } from "date-fns";
+import { groupBy } from "lodash";
 import { z } from "zod";
 import { db } from "~/lib/db";
 import { auth, t } from "../trpc";
-import { groupBy, uniq } from "lodash";
 
 export const projectRouter = t.router({
   create: t.procedure
@@ -67,7 +67,7 @@ export const projectRouter = t.router({
         });
       }
 
-      const project = await db.project.findUnique({
+      return await db.project.findUnique({
         select: {
           id: true,
           name: true,
@@ -79,17 +79,25 @@ export const projectRouter = t.router({
           id: input.id,
         },
       });
-
-      if (!project) {
+    }),
+  getProjectActivity: t.procedure
+    .use(auth)
+    .input(z.object({ id: z.string(), from: z.number() }))
+    .query(async ({ ctx, input }) => {
+      if (!ctx.tenant?.id) {
         throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Project Not Found",
+          code: "BAD_REQUEST",
+          message: "Project actions require a tenant",
         });
       }
 
+      const from = sub(Date.now(), {
+        days: input.from,
+      });
+
       const projectApiKeys = await db.apiKey.findMany({
         where: {
-          projectId: project.id,
+          projectId: input.id,
         },
       });
       const apiKeysIds = projectApiKeys.map((key) => key.id);
@@ -102,6 +110,9 @@ export const projectRouter = t.router({
           apiKeyId: {
             in: apiKeysIds,
           },
+          createdAt: {
+            gt: from,
+          },
         },
         orderBy: [
           {
@@ -110,13 +121,15 @@ export const projectRouter = t.router({
         ],
       });
 
-      const query = `SELECT COUNT(DATE(e.createdAt)) as numberOfEvents, DATE(e.createdAt) as createdAt, ak.name as keyName from obsolog.\`Event\` e INNER JOIN obsolog.\`ApiKey\` ak ON ak.id=e.apiKeyId WHERE ak.id IN ${apiKeysClause} GROUP BY DATE(e.createdAt), ak.name ORDER BY DATE(e.createdAt) ASC`;
+      const query = `SELECT COUNT(DATE(e.createdAt)) as numberOfEvents, DATE(e.createdAt) as createdAt, ak.name as keyName from obsolog.\`Event\` e INNER JOIN obsolog.\`ApiKey\` ak ON ak.id=e.apiKeyId WHERE e.createdAt > "${format(
+        from,
+        "yyyy-MM-dd HH:mm:ss"
+      )}" AND ak.id IN ${apiKeysClause} GROUP BY DATE(e.createdAt), ak.name ORDER BY DATE(e.createdAt) ASC`;
       const rawSeries = (await db.$queryRawUnsafe(query)) as {
         numberOfEvents: bigint;
         createdAt: Date;
         keyName: string;
       }[];
-
       const parsedSeries = rawSeries.map((entry) => ({
         "Number of Events": Number(entry.numberOfEvents),
         "Key Name": entry.keyName,
@@ -150,9 +163,8 @@ export const projectRouter = t.router({
       });
 
       return {
-        project,
-        events,
         series: groupedSeriesParsed,
+        events,
         keyNames: apiKeysNames,
       };
     }),
