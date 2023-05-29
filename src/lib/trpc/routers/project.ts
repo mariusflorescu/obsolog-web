@@ -103,6 +103,11 @@ export const projectRouter = t.router({
             in: apiKeysIds,
           },
         },
+        orderBy: [
+          {
+            createdAt: "desc",
+          },
+        ],
       });
 
       const query = `SELECT COUNT(DATE(e.createdAt)) as numberOfEvents, DATE(e.createdAt) as createdAt, ak.name as keyName from obsolog.\`Event\` e INNER JOIN obsolog.\`ApiKey\` ak ON ak.id=e.apiKeyId WHERE ak.id IN ${apiKeysClause} GROUP BY DATE(e.createdAt), ak.name`;
