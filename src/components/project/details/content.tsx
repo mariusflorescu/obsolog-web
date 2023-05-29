@@ -73,6 +73,13 @@ export function Content() {
         : [],
     [apiKeys]
   );
+  const selectedKeyName = useMemo(
+    () =>
+      selectedApiKey
+        ? apiKeys?.find((apiKey) => apiKey.id === selectedApiKey)?.name
+        : undefined,
+    [selectedApiKey]
+  );
 
   if (isFetching || isLoading) {
     return null;
@@ -118,7 +125,11 @@ export function Content() {
           )}
         />
       </div>
-      <Chart series={data?.series || []} keyNames={data?.keyNames || []} selectedApiKey={selectedApiKey}/>
+      <Chart
+        series={data?.series || []}
+        keyNames={data?.keyNames || []}
+        selectedApiKey={selectedKeyName}
+      />
       <Table data={data?.events} />
     </>
   );
