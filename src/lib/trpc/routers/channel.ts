@@ -3,6 +3,7 @@ import { auth, t } from "../trpc";
 import { db } from "~/lib/db";
 import { z } from "zod";
 import { format, sub } from "date-fns";
+import input from "postcss/lib/input";
 
 export const channelRouter = t.router({
   get: t.procedure.use(auth).query(async ({ ctx }) => {
@@ -152,7 +153,7 @@ export const channelRouter = t.router({
         },
       });
       const series =
-        (await db.$queryRaw`SELECT COUNT(DATE(createdAt)) as numberOfEvents, DATE(createdAt) as createdAt FROM obsolog.\`Event\` WHERE createdAt > ${from} GROUP BY DATE(createdAt)`) as {
+        (await db.$queryRaw`SELECT COUNT(DATE(createdAt)) as numberOfEvents, DATE(createdAt) as createdAt FROM obsolog.\`Event\` WHERE createdAt > ${from} AND channelId = ${input.id} GROUP BY DATE(createdAt)`) as {
           numberOfEvents: BigInt;
           createdAt: Date;
         }[];
