@@ -10,6 +10,7 @@ datasource db {
 
 enum Plan {
   HOBBY
+  PRO
 }
 
 enum Environment {
@@ -19,10 +20,11 @@ enum Environment {
 }
 
 model Tenant {
-  id        String   @id
-  slug      String?  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String   @id
+  slug             String?  @unique
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  stripeCustomerId String?  @unique
 
   plan Plan @default(HOBBY)
 

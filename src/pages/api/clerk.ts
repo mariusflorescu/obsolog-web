@@ -4,6 +4,7 @@ import { z } from "zod";
 import { NextApiRequest, NextApiResponse } from "next";
 import { env } from "~/lib/env";
 import { db } from "~/lib/db";
+import stripe from "~/lib/stripe";
 
 export const config = {
   api: {
@@ -18,6 +19,13 @@ const body = z.discriminatedUnion("type", [
       id: z.string(),
       username: z.string().nullable(),
       created_at: z.number(),
+      email_addresses: z.array(
+        z.object({
+          email_address: z.string(),
+        })
+      ),
+      first_name: z.string().nullable().optional(),
+      last_name: z.string().nullable().optional(),
     }),
   }),
 ]);
@@ -39,9 +47,19 @@ export default async function handler(
 
     switch (parsed.data.type) {
       case "user.created":
+        const email_address = parsed.data.data.email_addresses[0].email_address;
+        const full_name =
+          parsed.data.data.first_name && parsed.data.data.last_name
+            ? `${parsed.data.data.first_name} ${parsed.data.data.last_name}`
+            : email_address;
+        const customer = await stripe.customers.create({
+          email: parsed.data.data.email_addresses[0].email_address,
+          name: full_name,
+        });
         await db.tenant.create({
           data: {
             id: parsed.data.data.id,
+            stripeCustomerId: customer.id,
           },
         });
         break;
