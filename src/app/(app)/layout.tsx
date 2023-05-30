@@ -1,9 +1,13 @@
 import { SignIn, SignedIn, SignedOut } from "@clerk/nextjs/app-beta";
-import { Sidebar } from "../../components/sidebar";
 import { Toaster } from "~/components/ui/toaster";
 import { ReactQueryProvider } from "~/providers/react-query";
+import { Sidebar } from "../../components/sidebar";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <>
       <SignedIn>

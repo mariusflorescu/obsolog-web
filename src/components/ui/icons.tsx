@@ -15,6 +15,7 @@ import {
   ClipboardCheck,
   ChevronRight,
   ChevronLeft,
+  Check
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -35,4 +36,5 @@ export const Icons = {
   clipboardCheck: ClipboardCheck,
   arrowRight: ChevronRight,
   arrowLeft: ChevronLeft,
+  check: Check
 };

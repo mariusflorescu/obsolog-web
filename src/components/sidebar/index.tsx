@@ -1,8 +1,8 @@
 "use client";
 
-import { ThemeToggle } from "~/components/theme-toggle";
 import { Icons } from "~/components/ui/icons";
-import { ChannelItem, ChannelList } from "./channel";
+import { UserSettings } from "../user-settings";
+import { ChannelList } from "./channel";
 import { MainItem, MainList } from "./main";
 
 export function Sidebar() {
@@ -35,9 +35,7 @@ export function Sidebar() {
 
         <ChannelList />
       </div>
-      <div className="flex justify-center">
-        <ThemeToggle />
-      </div>
+      <UserSettings />
     </aside>
   );
 }
