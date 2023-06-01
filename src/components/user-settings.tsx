@@ -19,12 +19,15 @@ import { Icons } from "./ui/icons";
 import { trpc } from "~/lib/trpc/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { env } from "~/lib/env";
+import { useRouter } from "next/navigation";
 
 export function UserSettings() {
   const { theme, setTheme } = useTheme();
+  const { push } = useRouter();
   const { data, isFetching } = trpc.tenant.getCurrentTenant.useQuery();
   const tenant = data?.tenant;
   const stripeSessionId = data?.stripeSessionId;
+  const stripePortal = data?.stripePortal;
   const { isLoaded, user } = useUser();
 
   const isLoading = !isLoaded || isFetching;
@@ -44,6 +47,14 @@ export function UserSettings() {
 
     const stripe = await loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
     await stripe?.redirectToCheckout({ sessionId: stripeSessionId });
+  };
+
+  const handleGoToPortal = () => {
+    if (!stripePortal) {
+      return;
+    }
+
+    push(stripePortal.url);
   };
 
   if (isLoading) {
@@ -75,6 +86,12 @@ export function UserSettings() {
             <DropdownMenuItem onClick={() => handleProcessSubscription()}>
               <Icons.creditCard className="w-4 h-4 mr-2" />
               <span>Upgrade plan</span>
+            </DropdownMenuItem>
+          )}
+          {tenant?.plan === "PRO" && (
+            <DropdownMenuItem onClick={() => handleGoToPortal()}>
+              <Icons.creditCard className="w-4 h-4 mr-2" />
+              <span>Manage Subscription</span>
             </DropdownMenuItem>
           )}
         </DropdownMenuGroup>

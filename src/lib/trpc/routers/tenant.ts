@@ -37,6 +37,18 @@ export const tenantRouter = t.router({
         tenant,
         stripeSessionId: stripeSession.id,
       };
+    } else {
+      const stripePortal = await stripe.billingPortal.sessions.create({
+        customer: tenant?.stripeCustomerId as string,
+        return_url: process.env.VERCEL_URL
+          ? "https://obsolog.vercel.app/dashboard/overview"
+          : "http://localhost:3000/dashboard/overview",
+      });
+
+      return {
+        tenant,
+        stripePortal
+      }
     }
 
     return {
