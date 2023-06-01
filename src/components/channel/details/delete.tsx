@@ -29,7 +29,7 @@ export function DeleteChannelModal({ id }: { id: string }) {
         title: "Deleted Channel",
         description: "We have successfully deleted your channel!",
       });
-      push("/overview");
+      push("/dashboard/overview");
       utils.channel.get.invalidate();
       utils.overview.get.invalidate();
     },

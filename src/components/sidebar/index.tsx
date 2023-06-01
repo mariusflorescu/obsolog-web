@@ -12,24 +12,21 @@ export function Sidebar() {
         <MainList>
           <MainItem
             icon={<Icons.overview className="w-5 h-5" />}
-            href="/overview"
+            href="/dashboard/overview"
           >
             Overview
           </MainItem>
           <MainItem
             icon={<Icons.projects className="w-5 h-5" />}
-            href="/projects"
+            href="/dashboard/projects"
           >
             Projects
           </MainItem>
-          <MainItem icon={<Icons.key className="w-5 h-5" />} href="/api-keys">
-            API Keys
-          </MainItem>
           <MainItem
-            icon={<Icons.organization className="w-5 h-5" />}
-            href="/organization"
+            icon={<Icons.key className="w-5 h-5" />}
+            href="/dashboard/api-keys"
           >
-            Organization
+            API Keys
           </MainItem>
         </MainList>
 

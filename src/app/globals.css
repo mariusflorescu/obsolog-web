@@ -36,6 +36,10 @@
     --ring: 240 6% 90%;
 
     --radius: 0.5rem;
+
+    .gradient-bg {
+        background: radial-gradient(circle at 50% 100%, theme('colors.gray.400'), rgba(255, 255, 255, 0) 45%);
+      }
   }
 
   .dark {
@@ -72,6 +76,10 @@
 
     --radius: 0.5rem;
   }
+
+    .gradient-bg {
+      background: radial-gradient(circle at 50% 100%, theme('colors.gray.700'), rgba(255, 255, 255, 0) 45%);
+    }
 }
 
 @layer base {

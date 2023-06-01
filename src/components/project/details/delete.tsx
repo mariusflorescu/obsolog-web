@@ -29,7 +29,7 @@ export function DeleteProjectModal({ id }: { id: string }) {
         title: "Deleted Project",
         description: "We have successfully deleted your project!",
       });
-      push("/projects");
+      push("/dashboard/projects");
       utils.project.get.invalidate();
       utils.overview.get.invalidate();
     },

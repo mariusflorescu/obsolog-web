@@ -28,7 +28,10 @@ export function ChannelList() {
           data &&
           data.length > 0 &&
           data.map((channel) => (
-            <ChannelItem key={channel.id} href={`/channels/${channel.id}`}>
+            <ChannelItem
+              key={channel.id}
+              href={`/dashboard/channels/${channel.id}`}
+            >
               {channel.name}
             </ChannelItem>
           ))}

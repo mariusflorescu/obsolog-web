@@ -30,8 +30,8 @@ export default async function AppLayout({
                 colorText: "#161616",
               },
             }}
-            afterSignInUrl="/overview"
-            afterSignUpUrl="/overview"
+            afterSignInUrl="/dashboard/overview"
+            afterSignUpUrl="/dashboard/overview"
           />
         </div>
       </SignedOut>
