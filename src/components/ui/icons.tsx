@@ -1,21 +1,22 @@
 import {
   BarChart3,
-  Laptop,
-  Moon,
-  SunMedium,
-  type Icon as LucideIcon,
   Building,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardCheck,
+  ClipboardCopy,
+  CreditCard,
+  Edit3,
   FileCode,
   Hash,
-  Plus,
-  Trash2,
-  Edit3,
   Key,
-  ClipboardCopy,
-  ClipboardCheck,
-  ChevronRight,
-  ChevronLeft,
-  Check
+  Laptop,
+  Moon,
+  Plus,
+  SunMedium,
+  Trash2,
+  type Icon as LucideIcon,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -36,5 +37,6 @@ export const Icons = {
   clipboardCheck: ClipboardCheck,
   arrowRight: ChevronRight,
   arrowLeft: ChevronLeft,
-  check: Check
+  check: Check,
+  creditCard: CreditCard,
 };

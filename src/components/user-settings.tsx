@@ -16,10 +16,18 @@ import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { useTheme } from "next-themes";
 import { Icons } from "./ui/icons";
+import { trpc } from "~/lib/trpc/client";
+import { loadStripe } from "@stripe/stripe-js";
+import { env } from "~/lib/env";
 
 export function UserSettings() {
   const { theme, setTheme } = useTheme();
+  const { data, isFetching } = trpc.tenant.getCurrentTenant.useQuery();
+  const tenant = data?.tenant;
+  const stripeSessionId = data?.stripeSessionId;
   const { isLoaded, user } = useUser();
+
+  const isLoading = !isLoaded || isFetching;
 
   const email = user?.emailAddresses?.[0].emailAddress;
   const fullName = `${user?.firstName} ${user?.lastName}`;
@@ -29,7 +37,16 @@ export function UserSettings() {
       ? `${user.firstName[0]}${user.lastName[0]}`
       : `${email?.[0]}${email?.[1]}`;
 
-  if (!isLoaded) {
+  const handleProcessSubscription = async () => {
+    if (!stripeSessionId) {
+      return;
+    }
+
+    const stripe = await loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+    await stripe?.redirectToCheckout({ sessionId: stripeSessionId });
+  };
+
+  if (isLoading) {
     return <Skeleton className="w-full h-[58px]" />;
   }
 
@@ -52,14 +69,15 @@ export function UserSettings() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="min-w-[200px]">
-        <DropdownMenuLabel>
-          <div className="flex flex-col gap-2">
-            <span>{email}</span>
-            <span className="text-xs text-muted-foreground font-regular">
-              {fullName}
-            </span>
-          </div>
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Subscription</DropdownMenuLabel>
+          {tenant?.plan === "HOBBY" && (
+            <DropdownMenuItem onClick={() => handleProcessSubscription()}>
+              <Icons.creditCard className="w-4 h-4 mr-2" />
+              <span>Upgrade plan</span>
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuLabel>Appearance</DropdownMenuLabel>
