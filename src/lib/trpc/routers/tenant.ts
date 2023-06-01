@@ -2,7 +2,6 @@ import { TRPCError } from "@trpc/server";
 import { auth, t } from "../trpc";
 import { db } from "~/lib/db";
 import stripe from "~/lib/stripe";
-import console from "console";
 
 export const tenantRouter = t.router({
   getCurrentTenant: t.procedure.use(auth).query(async ({ ctx }) => {
@@ -25,7 +24,7 @@ export const tenantRouter = t.router({
         customer: tenant.stripeCustomerId as string,
         mode: "subscription",
         payment_method_types: ["card"],
-        line_items: [{ price: sub.id, quantity: 1 }],
+        line_items: [{ price: sub.default_price as string, quantity: 1 }],
         success_url: process.env.VERCEL_URL
           ? "https://obsolog.vercel.app/dashboard/overview"
           : "http://localhost:3000/dashboard/overview",
