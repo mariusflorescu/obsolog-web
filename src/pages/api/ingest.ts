@@ -6,6 +6,10 @@ import Cors from "cors";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { NextResponse } from "next/server";
+import { startOfMonth } from "date-fns";
+
+const LIMIT_EVENTS_HOBBY = 2000;
+const LIMIT_EVENTS_PRO = 10000;
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
@@ -105,6 +109,32 @@ export default async function handler(
 
     if (!channel) {
       return res.status(404).send("Could not find channel");
+    }
+
+    const monthStart = startOfMonth(new Date());
+
+    const numOfEvents = await db.event.aggregate({
+      _count: {
+        id: true,
+      },
+      where: {
+        tenantId: apiKey.tenantId,
+        createdAt: {
+          gt: monthStart,
+        },
+      },
+    });
+
+    if (
+      apiKey.tenant.plan === "HOBBY" &&
+      numOfEvents._count.id > LIMIT_EVENTS_HOBBY
+    ) {
+      return res.status(402).send("Exceeded limit for Hobby plan");
+    } else if (
+      apiKey.tenant.plan === "PRO" &&
+      numOfEvents._count.id > LIMIT_EVENTS_PRO
+    ) {
+      return res.status(402).send("Exceeded limit for Pro plan. Contact sales");
     }
 
     await db.event.create({

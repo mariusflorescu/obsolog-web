@@ -1,6 +1,9 @@
 import { faker } from "@faker-js/faker";
+import { PrismaClient } from "@prisma/client";
 import { v4 as uuid } from "uuid";
-import { db } from "~/lib/db";
+import { Event } from "~/lib/db";
+
+const db = new PrismaClient();
 
 const TENANT_ID = "user_2QbSg4p5VRNxCgL1n6WZGAPjUkp" as const;
 const API_KEYS = [
@@ -30,11 +33,22 @@ const CHANNELS = [
   },
 ] as const;
 
+async function createEvent(event: Omit<Event, "id" | "description">) {
+  console.log("💭 Creating event", event);
+  await db.event.create({
+    data: event,
+  });
+}
+
 async function main() {
+  await db.$connect();
+
   const tenant = TENANT_ID;
 
-  for (let i = 0; i < 12000; ++i) {
-    const date = faker.date.between({ from: "2023-05-15", to: "2023-05-31" });
+  let promises = [];
+
+  for (let i = 0; i < 2500; ++i) {
+    const date = faker.date.between({ from: "2023-06-01", to: "2023-06-31" });
     const randomProjectIdx = faker.number.int({ min: 0, max: 1 });
     const apiKey = API_KEYS[randomProjectIdx];
 
@@ -46,16 +60,20 @@ async function main() {
 
     const userId = uuid();
 
-    await db.event.create({
-      data: {
-        apiKeyId: apiKey,
-        name: eventMessage,
-        user: userId,
-        channelId: channelId,
-        tenantId: tenant,
-        createdAt: date,
-      },
-    });
+    const event: Omit<Event, "id" | "description"> = {
+      apiKeyId: apiKey,
+      name: eventMessage,
+      user: userId,
+      channelId: channelId,
+      tenantId: tenant,
+      createdAt: date,
+    };
+
+    promises.push(createEvent(event));
+  }
+
+  while (promises.length) {
+    await Promise.all(promises.splice(0, 6).map((f) => f));
   }
 }
 
