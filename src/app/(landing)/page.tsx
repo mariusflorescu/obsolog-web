@@ -6,7 +6,7 @@ import { Button } from "~/components/ui/button";
 import { Icons } from "~/components/ui/icons";
 
 export default function Landing() {
-  const user = useUser();
+  const { isLoaded, user } = useUser();
   const { push } = useRouter();
 
   return (
@@ -14,21 +14,13 @@ export default function Landing() {
       <div className="h-screen gradient-bg">
         <div className="w-full h-full container p-16">
           <div className="flex justify-end">
-            {user ? (
-              <Button
-                variant="secondary"
-                onClick={() => push("/dashboard/overview")}
-              >
-                Go to Dashboard
-              </Button>
-            ) : (
-              <Button
-                variant="secondary"
-                onClick={() => push("/dashboard/overview")}
-              >
-                Log In
-              </Button>
-            )}
+            <Button
+              variant="secondary"
+              onClick={() => push("/dashboard/overview")}
+              className={!isLoaded ? "opacity-0" : ""}
+            >
+              {user ? "Go to Dashboard" : "Log In"}
+            </Button>
           </div>
           <div className="mt-32 text-center">
             <h1 className="font-heading text-5xl">Obsolog.</h1>

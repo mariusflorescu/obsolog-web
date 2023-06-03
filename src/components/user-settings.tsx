@@ -12,7 +12,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Button } from "~/components/ui/button";
 import { Skeleton } from "./ui/skeleton";
-import { useUser } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { useTheme } from "next-themes";
 import { Icons } from "./ui/icons";
@@ -22,6 +22,7 @@ import { env } from "~/lib/env";
 import { useRouter } from "next/navigation";
 
 export function UserSettings() {
+  const { signOut } = useClerk();
   const { theme, setTheme } = useTheme();
   const { push } = useRouter();
   const { data, isFetching } = trpc.tenant.getCurrentTenant.useQuery();
@@ -55,6 +56,11 @@ export function UserSettings() {
     }
 
     push(stripePortal.url);
+  };
+
+  const handleLogout = () => {
+    signOut();
+    push("/");
   };
 
   if (isLoading) {
@@ -118,6 +124,13 @@ export function UserSettings() {
             <DropdownMenuShortcut>
               {theme === "dark" && <Icons.check className="w-4 h-4" />}
             </DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={() => handleLogout()}>
+            <Icons.logout className="w-4 h-4 mr-2" />
+            <span>Sign out</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

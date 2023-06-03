@@ -16,6 +16,7 @@ import {
   Plus,
   SunMedium,
   Trash2,
+  LogOut,
   type Icon as LucideIcon,
 } from "lucide-react";
 
@@ -39,4 +40,5 @@ export const Icons = {
   arrowLeft: ChevronLeft,
   check: Check,
   creditCard: CreditCard,
+  logout: LogOut,
 };

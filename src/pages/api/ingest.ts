@@ -17,13 +17,18 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.fixedWindow(10, "1s"),
 });
 
+const bodyObject = z.object({
+  channel: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  user: z.string().optional(),
+});
+
 const cors = Cors({
   methods: ["POST", "OPTIONS"],
   origin: "*",
 });
 
-// Helper method to wait for a middleware to execute before continuing
-// And to throw an error when an error happens in a middleware
 function runMiddleware(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -39,13 +44,6 @@ function runMiddleware(
     });
   });
 }
-
-const bodyObject = z.object({
-  channel: z.string(),
-  name: z.string(),
-  description: z.string().optional(),
-  user: z.string().optional(),
-});
 
 export default async function handler(
   req: NextApiRequest,
