@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Obsolog - Dead simple monitoring tool
 
-## Getting Started
+## Prerequisites
 
-First, run the development server:
+- Node.js (>= v16)
+- pnpm (`rpm install -g pnpm`)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## Installing the dependencies
+
+The dependencies are being install by typing the `pnpm install` in the terminal.
+
+## Environment variables
+
+Create a file `.env` at the root of the project, with the following information:
+
+```
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=YOUR_KEY_HERE
+CLERK_SECRET_KEY=YOUR_KEY_HERE
+CLERK_WEBHOOK_KEY=YOUR_KEY_HERE
+DATABASE_URL=YOUR_KEY_HERE
+UPSTASH_REDIS_REST_URL=YOUR_KEY_HERE
+UPSTASH_REDIS_REST_TOKEN=YOUR_KEY_HERE=
+STRIPE_SECRET_KEY=YOUR_KEY_HERE
+STRIPE_SIGNING_SECRET=YOUR_KEY_HERE
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=YOUR_KEY_HERE
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Notes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` and `STRIPE_SECRET_KEY` are from creating a project in Stripe
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` are from creating a new project in Clerk
+- `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are from creating a new Redis instance in Upstash
+- `STRIPE_SIGNING_SECRET` and `CLERK_WEBHOOK_KEY` are for the webhooks
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+## Running the project
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+To run the project, input the following command: `pnpm run dev`
+Now, the project should be seen on your [localhost](http://localhost:3000).
